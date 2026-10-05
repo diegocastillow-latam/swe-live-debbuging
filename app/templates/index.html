@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+
+        <header>
+            <h1>📋 Task Manager</h1>
+            <p class="subtitle">Gestiona tus tareas de forma sencilla</p>
+        </header>
+
+        <!-- Estadísticas -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">{{ stats.total }}</span>
+                <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-card stat-completed">
+                <span class="stat-number">{{ stats.completed }}</span>
+                <span class="stat-label">Completadas</span>
+            </div>
+            <div class="stat-card stat-pending">
+                <span class="stat-number">{{ stats.pending }}</span>
+                <span class="stat-label">Pendientes</span>
+            </div>
+            <div class="stat-card stat-progress">
+                <span class="stat-number">{{ stats.percentage }}%</span>
+                <span class="stat-label">Avance</span>
+            </div>
+        </section>
+
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar" style="width: {{ stats.percentage }}%"></div>
+        </div>
+
+        <!-- Formulario: nueva tarea -->
+        <section class="card">
+            <h2>Nueva tarea</h2>
+            <form action="/tasks" method="post" class="create-form">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Título de la tarea"
+                        required
+                        maxlength="120"
+                    >
+                    <input
+                        type="text"
+                        name="description"
+                        placeholder="Descripción (opcional)"
+                        maxlength="255"
+                    >
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Filtro -->
+        <section class="filter-bar">
+            <form method="get" action="/" id="filter-form">
+                <!-- BUG 4: el parámetro se llama "filter" pero el backend espera "status" -->
+                <select name="filter" id="filter-select" onchange="document.getElementById('filter-form').submit()">
+                    <option value="all"       {% if current_filter == "all"       %}selected{% endif %}>Todas las tareas</option>
+                    <option value="pending"   {% if current_filter == "pending"   %}selected{% endif %}>Pendientes</option>
+                    <option value="completed" {% if current_filter == "completed" %}selected{% endif %}>Completadas</option>
+                </select>
+            </form>
+            <span class="task-count">{{ tasks|length }} tarea{% if tasks|length != 1 %}s{% endif %}</span>
+        </section>
+
+        <!-- Lista de tareas -->
+        <section class="task-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                <div class="task-card {% if task.completed %}task-done{% endif %}">
+                    <div class="task-body">
+                        <span class="task-status-icon">{% if task.completed %}✅{% else %}⏳{% endif %}</span>
+                        <div class="task-text">
+                            <h3 class="task-title">{{ task.title }}</h3>
+                            {% if task.description %}
+                            <p class="task-desc">{{ task.description }}</p>
+                            {% endif %}
+                            <small class="task-date">{{ task.created_at[:10] }}</small>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        {% if not task.completed %}
+                        <!-- BUG 2: la ruta usa "task" (singular) en lugar de "tasks" (plural) -->
+                        <form action="/task/{{ task.id }}/complete" method="post">
+                            <button type="submit" class="btn btn-complete">✓ Completar</button>
+                        </form>
+                        {% else %}
+                        <span class="badge-done">Completada</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <p>No hay tareas{% if current_filter != "all" %} que coincidan con el filtro seleccionado{% endif %}.</p>
+            </div>
+            {% endif %}
+        </section>
+
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

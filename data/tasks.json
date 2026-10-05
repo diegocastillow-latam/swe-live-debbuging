@@ -1,0 +1,30 @@
+[
+  {
+    "id": "a1b2c3d4",
+    "title": "Configurar entorno de desarrollo",
+    "description": "Instalar Python 3.11, crear virtualenv e instalar dependencias del proyecto",
+    "completed": true,
+    "created_at": "2024-01-15T09:00:00"
+  },
+  {
+    "id": "e5f6g7h8",
+    "title": "Revisar documentación de FastAPI",
+    "description": "Leer el tutorial oficial: https://fastapi.tiangolo.com/tutorial/",
+    "completed": false,
+    "created_at": "2024-01-15T10:30:00"
+  },
+  {
+    "id": "i9j0k1l2",
+    "title": "Diseñar el modelo de datos",
+    "description": "Definir los campos necesarios para la entidad Task",
+    "completed": false,
+    "created_at": "2024-01-15T11:00:00"
+  },
+  {
+    "id": "m3n4o5p6",
+    "title": "Implementar endpoints REST",
+    "description": "Crear los endpoints GET /tasks y POST /tasks con sus validaciones",
+    "completed": false,
+    "created_at": "2024-01-15T14:00:00"
+  }
+]
