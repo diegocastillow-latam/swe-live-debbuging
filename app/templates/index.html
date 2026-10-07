@@ -64,7 +64,6 @@
         <!-- Filtro -->
         <section class="filter-bar">
             <form method="get" action="/" id="filter-form">
-                <!-- BUG 4: el parámetro se llama "filter" pero el backend espera "status" -->
                 <select name="filter" id="filter-select" onchange="document.getElementById('filter-form').submit()">
                     <option value="all"       {% if current_filter == "all"       %}selected{% endif %}>Todas las tareas</option>
                     <option value="pending"   {% if current_filter == "pending"   %}selected{% endif %}>Pendientes</option>
@@ -91,7 +90,6 @@
                     </div>
                     <div class="task-actions">
                         {% if not task.completed %}
-                        <!-- BUG 2: la ruta usa "task" (singular) en lugar de "tasks" (plural) -->
                         <form action="/task/{{ task.id }}/complete" method="post">
                             <button type="submit" class="btn btn-complete">✓ Completar</button>
                         </form>

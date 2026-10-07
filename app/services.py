@@ -40,7 +40,6 @@ def get_stats(tasks: list[dict]) -> dict:
     total = len(tasks)
     completed = sum(1 for t in tasks if t["completed"])
     pending = total - completed
-    # BUG 3: se calcula el porcentaje de tareas PENDIENTES en lugar de COMPLETADAS
     percentage = round((pending / total) * 100, 1) if total > 0 else 0
     return {
         "total": total,

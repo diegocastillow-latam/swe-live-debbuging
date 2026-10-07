@@ -6,7 +6,6 @@ import app.services as services
 
 app = FastAPI(title="Task Manager")
 
-# BUG 1: directorio incorrecto — debería ser "app/static"
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
